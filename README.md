@@ -122,5 +122,27 @@ Note: A little sloppy..yes... we just needed a rough wireframe to see how exactl
 ![](https://i.imgur.com/C7PTmf7.gif)
 ![](https://i.imgur.com/TnqFQMz.gif)
 
+# Mood Implementation
+
+**There are three key values that we are focusing on for the mood implementation.**
+
+**1. Valence**
+**2. Energy**
+**3. Danceability**
+
+* **Valence** is a measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+* **Danceability** describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
+* **Energy** is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
+
+**Valence** was the primary attribute we focused on, as this directly correlates with the mood of a track. Based on the mood inputted, the program only adds tracks within a narrow range of that valence. Unfortuanetly, it is not as accurate as we had hoped it to be, so results can be funky sometimes depending on the artist or genre.
+
+```
+let valence = json["tracks"]["items"][index]["valence"].doubleValue
+let dancibility = json["tracks"]["items"][index]["danceability"].doubleValue
+let energy = json["tracks"]["items"][index]["energy"].doubleValue
+```
+
+Above, you can see that we are bringing it in. All we have to do know is match the valence of a song to an emotion. Due to time shortage, we may have to dummy some values or hard code to showcase the actual main function!
 
 
+![](https://i.imgur.com/6NYrFhA.gif)
