@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
+
+
 class Song {
     
     struct SongData {
@@ -19,8 +21,12 @@ class Song {
         var durationInSeconds: Double
         var imageURL: String
         var songURL: String
+        
+        
+        
     }
     
+
     var songArray = [SongData]()
     var searchURL: String!
     
@@ -59,7 +65,14 @@ class Song {
                     
                     let songURL = json["tracks"]["items"][index]["uri"].stringValue
                     
+                   //Mood setters
+                    let valence = json["tracks"]["items"][index]["valence"].doubleValue
+                    let dancibility = json["tracks"]["items"][index]["danceability"].doubleValue
+                    let energy = json["tracks"]["items"][index]["energy"].doubleValue
+                    
+                    
                     self.songArray.append(SongData(name: name, artist: artist, duration: duration, durationInSeconds: durationInSeconds, imageURL: imageURL, songURL: songURL))
+                    
                 }
                 
                 

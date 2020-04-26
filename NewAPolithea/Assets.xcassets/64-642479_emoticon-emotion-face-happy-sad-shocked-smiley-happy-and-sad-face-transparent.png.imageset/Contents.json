@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "64-642479_emoticon-emotion-face-happy-sad-shocked-smiley-happy-and-sad-face-transparent.png.jpeg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

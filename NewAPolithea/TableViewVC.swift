@@ -15,6 +15,13 @@ class TableViewVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+
+    
+
+    @IBAction func moodSlider(_ sender: UISlider) {
+        
+        
+    }
     
     var song = Song()
     
@@ -97,5 +104,7 @@ extension TableViewVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
+    
+    
     
 }
