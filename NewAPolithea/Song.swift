@@ -15,27 +15,28 @@ import SwiftyJSON
 class Song {
     
     struct SongData {
+        var id: String
         var name: String
         var artist: String
         var duration: String
         var durationInSeconds: Double
         var imageURL: String
         var songURL: String
-        
-        
-        
     }
     
-
+    
     var songArray = [SongData]()
     var searchURL: String!
+    var mood: Float = 0.0
     
     var validURL = true
+    
     
     func getSongDetails(completed: @escaping () -> ()) {
         let auth = SPTAuth.defaultInstance()!
         
         //empty array after each search request
+        var midSongArray = [SongData]()
         songArray = []
         
         Alamofire.request(searchURL, method: .get, parameters: ["q":"", "type":"track"], encoding: URLEncoding.default, headers: ["Authorization": "Bearer " + auth.session.accessToken]).responseJSON { response in
@@ -53,6 +54,9 @@ class Song {
                 }
                 
                 for index in 0...numberOfSongs-1 {
+                    
+                    let songId = json["tracks"]["items"][index]["id"].stringValue
+                    
                     let name = json["tracks"]["items"][index]["name"].stringValue
                     
                     let artist = json["tracks"]["items"][index]["album"]["artists"][0]["name"].stringValue
@@ -65,21 +69,35 @@ class Song {
                     
                     let songURL = json["tracks"]["items"][index]["uri"].stringValue
                     
-                   //Mood setters
-                    let valence = json["tracks"]["items"][index]["valence"].doubleValue
-                    let dancibility = json["tracks"]["items"][index]["danceability"].doubleValue
-                    let energy = json["tracks"]["items"][index]["energy"].doubleValue
                     
-                    
-                    self.songArray.append(SongData(name: name, artist: artist, duration: duration, durationInSeconds: durationInSeconds, imageURL: imageURL, songURL: songURL))
-                    
+                    midSongArray.append(SongData(id: songId, name: name, artist: artist, duration: duration, durationInSeconds: durationInSeconds, imageURL: imageURL, songURL: songURL))
+
                 }
                 
                 
             case .failure(let error):
                 print("ERROR: \(error) failed to get data from url \(self.searchURL)")
             }
-            completed()
+            
+            for song in midSongArray{
+
+                Alamofire.request("https://api.spotify.com/v1/audio-features/\(song.id)", headers: ["Authorization": "Bearer " + auth.session.accessToken]).responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        let json = JSON(value)
+                        
+                        let valence = json["valence"].floatValue
+                        
+                        if abs((valence * 100)-(self.mood * 100)) <= 10{
+                            self.songArray.append(song)
+                        }
+                    
+                    case .failure(_):
+                        print("failed")
+                    }
+                    completed()
+                }
+            }
         }
     }
     

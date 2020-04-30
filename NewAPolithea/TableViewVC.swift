@@ -15,15 +15,14 @@ class TableViewVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-
     
-
-    @IBAction func moodSlider(_ sender: UISlider) {
-        
-        
-    }
-    
+    @IBOutlet weak var moodOfMeter: UISlider!
     var song = Song()
+    
+    @IBAction func moodMeter(_ sender: Any) {
+        song.mood = moodOfMeter.value
+        print(moodOfMeter.value)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,14 +57,14 @@ extension TableViewVC: UISearchBarDelegate {
         let keywords = search?.replacingOccurrences(of: " ", with: "+")
         
         //every time the searchBar is "clicked", the searchURL is updated
-        song.searchURL = "https://api.spotify.com/v1/search?q=\(keywords!)&type=track"
+        song.searchURL = "https://api.spotify.com/v1/search?q=\(keywords!)&type=track&limit=50"
         
         self.view.endEditing(true)
         
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        song.getSongDetails {
+        song.getSongDetails{
             self.tableView.reloadData()
         }
 
