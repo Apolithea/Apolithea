@@ -146,3 +146,47 @@ Above, you can see that we are bringing it in. All we have to do know is match t
 
 
 ![](https://i.imgur.com/6NYrFhA.gif)
+
+# Successful Mood Implementation!
+
+We were able to successfully implement searching for the song based off the user's mood. This was done by matchinf the comapring the songs **Valence** (whether a song is happy or sad ranging from 1.0, happy, to 0.0, sad).
+
+``` for song in midSongArray{
+
+                Alamofire.request("https://api.spotify.com/v1/audio-features/\(song.id)", headers: ["Authorization": "Bearer " + auth.session.accessToken]).responseJSON { response in
+                    switch response.result {
+                    case .success(let value):
+                        let json = JSON(value)
+                        
+                        let valence = json["valence"].floatValue
+                        
+                        if abs((valence * 100)-(self.mood * 100)) <= 10{
+                            self.songArray.append(song)
+                        }
+                    
+                    case .failure(_):
+                        print("failed")
+                    }
+                    completed()
+```
+
+In the code above, it shows that after the user request on what music they are looking for; it will compare each song's **Valence** to the current mood of the user, afterwards returning the songs that fit their mood.
+
+**Below you can see how the result vary based off where the moodometer is. We meant to add signifiers, but for reference, the lower the moodometer, the sadder the user and vice versa.**
+
+![](https://i.imgur.com/Ee0NRM1.gif)
+
+# Future Work
+
+Despite us finishing the main feature of the app, it is clear that it is still far from complete. Unfortunatley we did not implement as much features as we wanted to. Though it will always be here for us to continue the apps progress.
+
+**Just some things we want to add or improve on:**
+
+**1. Increase accuracy of mood settings.
+2. More Personalization
+3. Create playlist of specific moods 
+4. Able to share playlist, moods, etc.**
+
+Note that the completion of this app is for pratical reasons. 
+
+It was fun designing and making an simple mobile application. This is definetly something we can see ourselves doing again!
